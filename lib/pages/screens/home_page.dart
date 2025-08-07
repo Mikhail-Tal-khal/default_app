@@ -1,3 +1,4 @@
+import 'package:default_app/auth/app_state.dart';
 import 'package:default_app/widgets/add_item_page.dart';
 import 'package:default_app/widgets/track_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class HomePage extends StatelessWidget {
   ) {
     return InkWell(
       onTap: () => navigateTo(context, targetPage),
-      child: SizedBox( // Added SizedBox to constrain height
+      child: SizedBox(
+        // Added SizedBox to constrain height
         height: 36, // Match parent constraint height
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -28,7 +30,7 @@ class HomePage extends StatelessWidget {
             Icon(icon, color: Colors.grey, size: 20), // Reduced icon size
             const SizedBox(height: 2), // Reduced spacing
             Text(
-              label, 
+              label,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 10, // Reduced font size
@@ -42,6 +44,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppState.saveLastPage('home');
+    });
     return Scaffold(
       body: Center(child: Text('Welcome to Home')),
       floatingActionButton: FloatingActionButton(
@@ -54,7 +59,10 @@ class HomePage extends StatelessWidget {
         shape: CircularNotchedRectangle(),
         notchMargin: 6,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Removed vertical padding
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 0,
+          ), // Removed vertical padding
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

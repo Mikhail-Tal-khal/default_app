@@ -1,3 +1,5 @@
+import 'package:default_app/auth/app_state.dart';
+import 'package:default_app/pages/screens/home_page.dart';
 import 'package:default_app/pages/signup_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _termsAccepted = false;
   bool _isLoading = false;
   bool _isGoogleLoading = false;
-  bool _obscurePassword = true; // State variable for password visibility
+  bool _obscurePassword = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final FocusNode _passwordFocus = FocusNode();
 
-  // Initialize GoogleSignIn once
+  // Initialize GoogleSignIn with proper configuration
   late final GoogleSignIn _googleSignIn;
 
   @override
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _googleSignIn = GoogleSignIn(
       scopes: ['email', 'profile'],
-      clientId: kIsWeb ? 'YOUR_WEB_CLIENT_ID' : null,
+      clientId: kIsWeb ? '971391628451-0fpg43k33dujej412ep6eg4h63n8rdgo.apps.googleusercontent.com' : null,
     );
   }
 
@@ -44,6 +46,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppState.saveLastPage('home');
+    });
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
 
@@ -306,14 +312,11 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _loginWithEmail,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.blue.shade700, // Deep blue color
-                        foregroundColor: Colors.white, // Text and icon color
+                        backgroundColor: Colors.blue.shade700,
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // Increased corner radius
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 2,
                         shadowColor: Colors.blue.shade200,
@@ -428,7 +431,6 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Using PNG with fallback to Material icon
                                 Image.asset(
                                   "assets/google_icon.png",
                                   height: 24,
@@ -441,7 +443,6 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                 ),
                                 const SizedBox(width: 12),
-                                // Apply text style directly to Text widget
                                 Text(
                                   "Sign in with Google",
                                   style: TextStyle(
@@ -497,6 +498,12 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        }
       } on FirebaseAuthException catch (e) {
         String message = "Authentication failed";
         if (e.code == 'user-not-found') {
@@ -527,7 +534,10 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isGoogleLoading = true);
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return;
+      if (googleUser == null) {
+        setState(() => _isGoogleLoading = false);
+        return;
+      }
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -538,20 +548,32 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Navigate to HomePage after successful login
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Google sign-in failed: ${e.message}")),
+          SnackBar(
+            content: Text(
+              "Google sign-in failed: ${e.message ?? 'Unknown error'}",
+            ),
+          ),
         );
+        setState(() => _isGoogleLoading = false);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+        setState(() => _isGoogleLoading = false);
       }
-    } finally {
-      if (mounted) setState(() => _isGoogleLoading = false);
     }
   }
 
