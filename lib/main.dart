@@ -1,11 +1,13 @@
 import 'package:default_app/auth/app_state.dart';
 import 'package:default_app/auth/auth_service.dart';
 import 'package:default_app/constants/theme/theme.dart';
+import 'package:default_app/l10n/app_localizations.dart';
 import 'package:default_app/pages/login_page.dart';
 import 'package:default_app/pages/screens/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -14,9 +16,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiProvider(
-      providers: [
-        Provider<AuthService>(create: (_) => AuthService()),
-      ],
+      providers: [Provider<AuthService>(create: (_) => AuthService())],
       child: const MyApp(),
     ),
   );
@@ -29,6 +29,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('sw'), // add other locales if needed
+      ],
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: const AuthWrapper(),
@@ -66,7 +76,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
-          
+
           // Redirect logic
           if (user == null) {
             return const LoginPage();
@@ -80,9 +90,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
             }
           }
         }
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }
