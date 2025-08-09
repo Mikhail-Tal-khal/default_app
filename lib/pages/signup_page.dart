@@ -456,7 +456,7 @@ class _SignupPageState extends State<SignupPage> {
           // Navigate to HomePage after successful signup
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) =>  HomePage()),
           );
         }
       } on FirebaseAuthException catch (e) {

@@ -1,7 +1,8 @@
+import 'package:default_app/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData appTheme = ThemeData(
-  primaryColor: const Color(0xFF007BFF),
+  primaryColor: MColors.primary,
   scaffoldBackgroundColor: Colors.white,
   inputDecorationTheme: const InputDecorationTheme(
     border: OutlineInputBorder(),

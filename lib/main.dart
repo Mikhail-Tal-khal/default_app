@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         Locale('sw'), // add other locales if needed
       ],
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
       theme: appTheme,
       home: const AuthWrapper(),
     );
@@ -83,10 +84,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
           } else {
             // Navigate to last visited page if exists
             if (_lastVisitedPage == 'home') {
-              return const HomePage();
+              return  HomePage();
             } else {
               // Default page after login
-              return const HomePage(); // Replace with your initial post-login page
+              return  HomePage(); // Replace with your initial post-login page
             }
           }
         }

@@ -53,7 +53,7 @@ class CustomBottomNav extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 8),
-            navItem(context, Icons.home, "Home", const HomePage()),
+            navItem(context, Icons.home, "Home",  HomePage()),
             const Spacer(),
             navItem(context, Icons.add_chart, "History", const TrackPage()),
             const Spacer(),
