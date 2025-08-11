@@ -1,4 +1,4 @@
-import 'package:default_app/pages/screens/home_page.dart';
+import 'package:default_app/pages/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 import '../widgets/track_page.dart';
 import '../widgets/activity_page.dart';

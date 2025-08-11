@@ -1,5 +1,5 @@
 import 'package:default_app/auth/app_state.dart';
-import 'package:default_app/pages/screens/home_page.dart';
+import 'package:default_app/pages/screens/home/home_page.dart';
 import 'package:default_app/pages/signup_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

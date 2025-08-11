@@ -3,7 +3,7 @@ import 'package:default_app/auth/auth_service.dart';
 import 'package:default_app/constants/theme/theme.dart';
 import 'package:default_app/l10n/app_localizations.dart';
 import 'package:default_app/pages/login_page.dart';
-import 'package:default_app/pages/screens/home_page.dart';
+import 'package:default_app/pages/screens/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
